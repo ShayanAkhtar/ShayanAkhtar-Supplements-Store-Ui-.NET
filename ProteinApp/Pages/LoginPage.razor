@@ -1,0 +1,57 @@
+﻿@page "/login"
+@using Microsoft.JSInterop
+@inject IJSRuntime JSRuntime
+@inject NavigationManager navManager
+<PageTitle>Login</PageTitle>
+<link rel="stylesheet" href="~/css/login.css">
+<header>
+
+</header>
+<div class="mainDiv">
+    <div class="HalfContent">
+     <div class="Logo"></div>
+     <div class="useremail">
+         <input placeholder="Email address" type="text" class="inputfield" @bind-value="email"/>
+        </div>
+     <div class="userpassword">
+            <input placeholder="Enter Password" type="password" class="inputfield" @bind-value="password" />
+     </div>
+     <div class="Buttondiv" @onclick="Login">
+         <p class="logintext">Login</p>
+     </div>
+
+     <div class="signupline">
+            <p>Don't have an account? </p>
+            <span @onclick="NavigateToSignup" class="signuptext"> Signup</span>
+     </div>
+      </div>
+    <div class="HalfPic"></div>
+   
+</div>
+
+@code {
+    private string email;
+    private string password;
+
+
+    private void NavigateToSignup()
+    {
+        navManager.NavigateTo("/signup");
+    }
+    private void Login()
+    {
+        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+        {
+            ShowPopup("All fields are required.");
+        }
+        else
+        {
+            ShowPopup("Login Successfully");
+        }
+    }
+    private async Task ShowPopup(string message)
+    {
+        await JSRuntime.InvokeVoidAsync("alert", message);
+    }
+}
+
